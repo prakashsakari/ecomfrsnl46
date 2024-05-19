@@ -1,10 +1,15 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useWishlist } from "../../context/wishlist-context";
+import { findProduct } from "../../utils/wishlisthelper";
+import { useCart } from "../../context/cart-context";
 
 export const ProductCard = ({ product }) => {
 
     const { wishlistDispatch, wishlist } = useWishlist();
+    const { cart } = useCart();
+    const { cartDispatch } = useCart();
     const location = useLocation();
+    const navigate = useNavigate();
 
     const onWishlistClick = (product, type) => {
         if (type === 'add'){
@@ -21,9 +26,20 @@ export const ProductCard = ({ product }) => {
         
     }
 
-    const findProductInWishlist = (wishlist, productId) => wishlist.some(product => product._id === productId);
+    const onAddToCartClick = (product) => {
+        if (isInCart){
+            navigate('/cart')
+        }else{
+            cartDispatch({
+                type: 'ADD',
+                payload: product
+            })
+        }
+        
+    }  
 
-    const isInWishlist = findProductInWishlist(wishlist, product._id);
+    const isInWishlist = findProduct(wishlist, product._id);
+    const isInCart = findProduct(cart, product._id)
 
     return (
         <div className="w-56 border drop-shadow-md rounded-lg bg-gray-50 flex flex-col gap-2 pb-1.5">
@@ -53,7 +69,7 @@ export const ProductCard = ({ product }) => {
                 }
 
 
-                <button className={`bg-slate-50 py-1 ${isInWishlist ? 'px-2' : 'px-4'} text-slate-900 border border-slate-900 rounded-md hover:opacity-75`}>Add to Cart</button>
+                <button onClick={() => onAddToCartClick(product)} className={`bg-slate-50 py-1 ${isInWishlist ? 'px-2' : 'px-4'} text-slate-900 border border-slate-900 rounded-md hover:opacity-75`}>{isInCart ? 'Go To Cart' : 'Add To Cart'}</button>
             </div>
         </div>
     )
