@@ -7,6 +7,8 @@ export const Header = () => {
     const { wishlist } = useWishlist();
     const { cart } = useCart();
 
+    const token = localStorage.getItem('token');
+
     const navigate = useNavigate();
 
     const onWishlistClick = () => {
@@ -19,6 +21,15 @@ export const Header = () => {
 
     const onShopitClick = () => {
         navigate('/');
+    }
+
+    const onLoginClick = () => {
+        if (!token){
+            navigate('/auth/login');
+        }else{
+            navigate('/');
+            localStorage.clear();
+        }
     }
 
     return (
@@ -45,6 +56,9 @@ export const Header = () => {
                             <div className="absolute top-[-8px] right-[-8px] text-slate-50 bg-slate-900 rounded-full h-4 w-4 text-xs">{cart?.length}</div>
                         )
                     }
+                </button>
+                <button onClick={onLoginClick}>
+                    {token ? 'Logout' : 'Login'}
                 </button>
             </nav>
         </header>

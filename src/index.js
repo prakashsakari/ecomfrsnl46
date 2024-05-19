@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { FilterProvider } from './context/filter-context';
 import { WishlistProvider } from './context/wishlist-context';
 import { CartProvider } from './context/cart-context';
+import { AuthProvider } from './context/auth-context';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,7 +16,9 @@ root.render(
       <FilterProvider>
         <WishlistProvider>
           <CartProvider>
-            <App />
+            <AuthProvider>
+              <App />
+            </AuthProvider>
           </CartProvider>
         </WishlistProvider>
       </FilterProvider>
