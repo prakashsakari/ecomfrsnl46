@@ -1,0 +1,1 @@
+export const findProduct = (products, productId) => products.some(product => product._id === productId);
